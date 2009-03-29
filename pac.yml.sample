@@ -1,7 +1,0 @@
-install:
-  web:          merb
-  database:     mysql
-
-upgrade:
-  web:          git@hudson.telematter.com:bluffweb.git
-  parser:       git@hudson.telematter.com:bluffparse.git
