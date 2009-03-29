@@ -1,0 +1,35 @@
+--- 
+hosts: 
+  host1: beta.yoursite.com
+  host2: 10.0.0.23
+  host3: 10.23.43.34
+  host4: 10.0.0.33
+  host5: 10.1.1.1
+projects: 
+  myjava:
+    name: myjava
+    repo: git@mysite.com:myjava.git
+    dlocation: /mnt/myjava
+    build: "cd ~/myjava/com/myjava; . ./path.sh; cd grammars; java org.antlr.Tool *.g; javac *.java; cd ..; javac *.java;"
+  myweb:
+    name: myweb
+    repo: git@mysite.com:myweb.git
+    dlocation: /mnt/app/
+    build: "rm /mnt/app/current; ln -s /mnt/app/myweb /mnt/app/current; ln -s /mnt/static/images/ /mnt/app/current/public/images; ln -s /mnt/static/flash/ /mnt/app/current/public/flash;"
+services: 
+  mysql: 
+    name: mysql
+    stop: /etc/init.d/mysqld --stop
+    start: /etc/init.d/mysqld --start
+  web: 
+    name: merb
+    stop: "killall merb"
+    start: "export CLASSPATH=/$HOME/junit-4.5.jar:/$HOME/myjava:.:/$HOME/myjava/com/myjava/grammars/:/$HOME/myjava/com/myjava/antlr-3.1.1.jar:/$HOME/myjava/com/myjava/mysql-connector-java-3.1.14.jar:; cd /mnt/app/current; merb -a mongrel -p 4000 -c 4 -d -e production"
+sysdeps: 
+  tarballs: 
+    libmemcached: "http://download.tangent.org/libmemcached-0.25.tar.gz"
+  apts: 
+    libxml-dev: libxml-dev
+  gems: 
+    sihthead: git@github.com
+    hoe: ""
