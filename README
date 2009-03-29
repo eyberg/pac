@@ -41,11 +41,11 @@ Options:
     certain things
 
   upgrade
-    -- can accept syntax like 'upgrade bluffweb' to do a git diff and
+    -- can accept syntax like 'upgrade myweb' to do a git diff and
     grab the latest code
 
   restart
-    -- can accept syntax like 'restart mysql' or 'restart bluffparse'
+    -- can accept syntax like 'restart mysql' or 'restart myjava'
 
 Assumptions:
   * all ssh-keys have been added in your path, which I do before I start
@@ -56,8 +56,6 @@ Assumptions:
 Cucumber Stories/TODO/etc..:
 
   * easy easy easy auto-provisioining of deployments
-
-  * capistrano sucks ass so much!
 
   * should have a DSL for doing quick tasks in the shell?
 
