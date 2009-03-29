@@ -1,0 +1,83 @@
+Name:
+  don't really have a good one yet, so took the reverse of cap..
+
+Why not use Vlad or Capistrano?
+
+  These are both excellent choices, however, for myself I spend a LOT
+of time deploying and don't think I should. I should be able to type one
+short command and be set. I should NOT have to spend an equal amount of
+time configuring my script and sshing in to make sure something worked.
+
+Why not use Puppet or Chef?
+  
+  These are also excellent programs -- however, once again I do not
+wish to spend an afternoon learning the vernacular and spending two hours
+to make one small change -- if they work for you -- fine use them -- I'm
+using this.
+
+Running:
+  I usually have my ssh-keys added during a coding session. Among them
+are ones for my git repositories and one for my production server. To
+add yours simply:
+
+  ssh-add ~/.ssh/gitrepo
+  ssh-add ~/.ssh/production
+
+  If you do this before you hop into SCREEN you'll be able to close/open
+as many shells as you want without having to retype your password.
+
+  Now you may run pac.
+
+Options:
+  generate
+    -- can be ran multiple times to modify the yaml file from a guided
+    script
+
+  install
+    -- can either accept from commandline what host to install from or
+    choose from list; can modify values on the fly depending on which
+    host you've chosen; searches for dependencies and auto-installs
+    them; should be smart enough to grab the right depedencies for 
+    certain things
+
+  upgrade
+    -- can accept syntax like 'upgrade bluffweb' to do a git diff and
+    grab the latest code
+
+  restart
+    -- can accept syntax like 'restart mysql' or 'restart bluffparse'
+
+Assumptions:
+  * all ssh-keys have been added in your path, which I do before I start
+    up a screen session; if not we should eventually be able to point
+    various keys to whatever project/server and allow it to be smart enough
+    to where you only have to type in your password once instead of 20 times
+
+Cucumber Stories/TODO/etc..:
+
+  * easy easy easy auto-provisioining of deployments
+
+  * capistrano sucks ass so much!
+
+  * should have a DSL for doing quick tasks in the shell?
+
+  * should be able to pull multiple projects into a deployment
+    (java app && merb app)
+
+  * should be able to do extensive conf editing, etc. each time
+
+  * should not have to type in the password every time for something as simple
+    as restarting a server
+
+  * upgrade should upgrade all code from your repositories by default unless
+    you specify only repository to upgrade
+
+  * should auto-generate a recipe for you based on various questions
+
+  * also should have the ability to modify this recipe later on
+
+  * basically we are looking at zero-conf editing
+
+  * should support individual keys and/or passwords for each repo you add
+
+  * should try to use ssh-agent logins already available in your environment..
