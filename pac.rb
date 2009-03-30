@@ -136,8 +136,15 @@ class Pac
     hash = File.open('pac.yml') do |f| YAML.load f end
 
     if !ARGV[1].nil? then
-      startcmd = hash["services"]["#{ARGV[1]}"]["start"]
-      stopcmd = hash["services"]["#{ARGV[1]}"]["stop"]
+      service =  hash["services"]["#{ARGV[1]}"]
+
+      if service.nil? then
+        not_valid('service')
+        Process.exit
+      else
+        startcmd = service["start"]
+        stopcmd = service["stop"]
+      end
     else
       startcmd = hash["services"]["web"]["start"]
       stopcmd = hash["services"]["web"]["stop"]
