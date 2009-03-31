@@ -1,6 +1,19 @@
 Name:
   don't really have a good one yet, so took the reverse of cap..
 
+Installing:
+  Pac requires the 'net/ssh' libraries found in the libnet-ssh-ruby1.8
+deb package.
+
+  Pac also requires the 'amazon-ec2' gem found on github at
+http://github.com/grempe/amazon-ec2/tree/master if you wish to utilize
+auto ec2 instance provisioning. (as of right now you MUST install
+this gem)
+
+  You can copy the suggested pac.yml.sample to pac.yml.
+  Also, if you use Amazon EC2 copy the ec2.yml.sample to ec2.yml and
+  change your keys. Now you are ready to provision/deploy your code.
+
 Why not use Vlad or Capistrano?
 
   These are both excellent choices, however, for myself I spend a LOT
@@ -30,15 +43,30 @@ as many shells as you want without having to retype your password.
 
 Examples:
 
+  Provisioning:
+  ./pac.rb provision
+
+    This will spit out a new ip for you with a base ami installed.
+
   Installing:
-  #initalize a new amazon ec2 instance (ami-b31ff8da)
   ./pac.rb install ec2.ip.goes.here
+
+    This will install all related packages to your new ec2 instance.
 
   Upgrading:
   ./pac.rb upgrade mymerbproj
 
+    This will copy over 'mymerbproj' from your private git repo to
+    the server -- if you do this again in the future it will simply
+    update the changed files. Does anyone actually deploy often AND
+    keep the old releases cap style??
+
   Restart:
   ./pac.rb restart web
+
+    This is a simple task to restart your web service but you can
+    provide any service to restart as long as you provide the appropriate
+    start/stop commands in your pac.yml file.
 
 Options:
   generate

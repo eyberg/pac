@@ -10,6 +10,8 @@ require 'Service'
 require 'Project'
 require 'Colorify'
 
+require 'EC2Wrap'
+
 class Pac
   include Colorify
 
@@ -77,6 +79,11 @@ class Pac
     end
 
     puts colorGreen("done")
+  end
+
+  def provision
+    ec2 = EC2Wrap.new
+    ec2.provision
   end
 
   def upgrade
@@ -185,6 +192,7 @@ class Pac
   def usage
     puts colorBlack("Usage: Pac {generate|install|upgrade|restart}")
     print colorBlue("\tgenerate:"); print colorBlack(" generate a deployment recipe\r\n")
+    print colorBlue("\tprovision: "); print colorBlack(" provision a new EC2 instance\r\n")
     print colorBlue("\tіnstall: "); print colorBlack(" perform initial install [host]\r\n")
     print colorBlue("\tupgrade: "); print colorBlack(" upgrade deployment\r\n")
     print colorBlue("\trestart:"); print colorBlack(" restart [servicename]\r\n")
@@ -227,6 +235,8 @@ p = Pac.new
 
 if ARGV[0].eql? "generate" then
   p.generate
+elsif ARGV[0].eql? "provision" then
+  p.provision
 elsif ARGV[0].eql? "install" then
   p.install
 elsif ARGV[0].eql? "upgrade" then

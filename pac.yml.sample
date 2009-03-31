@@ -42,5 +42,6 @@ sysdeps:
     vim: vim
     rdoc: rdoc
     irb: irb
+    nginx: nginx
   gems:
     merb: merb
