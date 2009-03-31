@@ -13,12 +13,52 @@ require 'Colorify'
 class Pac
   include Colorify
 
-  def connect
-  end
+  # using ami ami-b31ff8da by default
 
+  # maybe if left blank then launch a new ami??
   def install
-    verify
-    puts "installing.."
+    #verify
+
+    hash = File.open('pac.yml') do |f| YAML.load f end
+
+    if !ARGV[1].nil? then
+      host = ARGV[1]
+    else
+      host =  hash["hosts"]["#{ARGV[1]}"][1]
+    
+      if host.nil? then
+        not_valid("host")
+      end
+    end
+
+    Net::SSH.start(host, 'root', :forward_agent => true) do |ssh|
+
+      puts colorGreen("installing base components")
+ 
+      # curl should be already installed on this ami
+      # ensure we have git, rubygems
+      stdout = ""
+      ssh.exec!("apt-get update; apt-get install -yq git-core rubygems1.8") do |channel, stream, data|
+        stdout << data if stream == :stdout
+      end
+
+      # debug
+      puts stdout
+
+      puts colorGreen("installing gems")
+
+      # grab gem list
+      stdout = ""
+      ssh.exec!("gem install hoe --no-ri --no-rdoc") do |channel, stream, data|
+        stdout << data if stream == :stdout
+      end
+
+      # debug
+      puts stdout
+
+    end
+
+    puts colorGreen("done")
   end
 
   def upgrade
@@ -127,7 +167,7 @@ class Pac
   def usage
     puts colorBlack("Usage: Pac {generate|install|upgrade|restart}")
     print colorBlue("\tgenerate:"); print colorBlack(" generate a deployment recipe\r\n")
-    print colorBlue("\tіnstall: "); print colorBlack(" perform initial install\r\n")
+    print colorBlue("\tіnstall: "); print colorBlack(" perform initial install [host]\r\n")
     print colorBlue("\tupgrade: "); print colorBlack(" upgrade deployment\r\n")
     print colorBlue("\trestart:"); print colorBlack(" restart [servicename]\r\n")
   end

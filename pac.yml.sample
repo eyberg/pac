@@ -30,6 +30,9 @@ sysdeps:
     libmemcached: "http://download.tangent.org/libmemcached-0.25.tar.gz"
   apts: 
     libxml-dev: libxml-dev
-  gems: 
-    sihthead: git@github.com
+    mysql-server: mysql-server
+    libmysqlclient-dev: libmysqlclient-dev
+    sun-java6-jdk: sun-java6-jdk
+    sun-java6-jre: sun-java6-jre
+  gems:
     hoe: ""
