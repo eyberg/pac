@@ -33,24 +33,30 @@ class Pac
 
     Net::SSH.start(host, 'root', :forward_agent => true) do |ssh|
 
-      puts colorGreen("installing base components")
- 
-      # curl should be already installed on this ami
-      # ensure we have git, rubygems
+      puts colorGreen("installing base components: ")
+      apts = []
+      hash["sysdeps"]["apts"].each do |a| apts << a[1] + " " end
+      puts apts.to_s
+
       stdout = ""
-      ssh.exec!("apt-get update; apt-get install -yq git-core rubygems1.8") do |channel, stream, data|
-        stdout << data if stream == :stdout
+      # DEBIAN_FRONTEND apparently is DEBCONF_FRONTEND sometimes..
+      ssh.exec!("apt-get update; DEBIAN_FRONTEND='noninteractive' apt-get install -yq #{apts.to_s}") do |channel, stream, data|
+        stdout << data if stream == :stdout or stream == :stderr
+        puts stdout
       end
-
       # debug
-      puts stdout
+      #puts stdout
 
-      puts colorGreen("installing gems")
+      puts colorGreen("installing gems:")
+      gems = []
+      hash["sysdeps"]["gems"].each do |a| gems << a[1] + " " end
+      puts gems.to_s
 
-      # grab gem list
+      # should we prompt user to install merb or rails or should it go into
+      # pac.yml?
       stdout = ""
-      ssh.exec!("gem install hoe --no-ri --no-rdoc") do |channel, stream, data|
-        stdout << data if stream == :stdout
+      ssh.exec!("gem install #{gems.to_s} --no-ri --no-rdoc") do |channel, stream, data|
+        stdout << data if stream == :stdout or stream = :stderr
       end
 
       # debug

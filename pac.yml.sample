@@ -28,11 +28,17 @@ services:
 sysdeps: 
   tarballs: 
     libmemcached: "http://download.tangent.org/libmemcached-0.25.tar.gz"
-  apts: 
+  apts:
+    git-core: git-core
+    rubygems1.8: rubygems1.8
     libxml-dev: libxml-dev
     mysql-server: mysql-server
     libmysqlclient-dev: libmysqlclient-dev
     sun-java6-jdk: sun-java6-jdk
     sun-java6-jre: sun-java6-jre
+    ruby-1.8-dev: ruby-1.8-dev
+    libsqlite3-dev: libsqlite3-dev
+    sqlite3: sqlite3
+    libsqlite3-ruby: libsqlite3-ruby
   gems:
-    hoe: ""
+    merb: merb
