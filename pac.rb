@@ -15,6 +15,10 @@ class Pac
 
   # using ami ami-b31ff8da by default
 
+  # maybe have a switch for quiet mode?
+  # quiet mode would entail substituing all the stdout/stderr
+  # lines for '.'
+  #
   # maybe if left blank then launch a new ami??
   def install
     #verify
@@ -44,8 +48,15 @@ class Pac
         stdout << data if stream == :stdout or stream == :stderr
         puts stdout
       end
-      # debug
-      #puts stdout
+
+      puts colorGreen("pulling and building correct rubygems")
+      stdout = ""
+      ssh.exec!("wget http://rubyforge.org/frs/download.php/45905/rubygems-1.3.1.tgz;" +
+                " tar xzf rubygems-1.3.1.tgz; cd rubygems-1.3.1; ruby setup.rb; " +
+                "ln -s /usr/bin/gem1.8 /usr/bin/gem") do |channel, stream, data|
+        stdout << data if stream == :stdout or stream = :stderr
+        print "."
+      end
 
       puts colorGreen("installing gems:")
       gems = []
@@ -57,6 +68,7 @@ class Pac
       stdout = ""
       ssh.exec!("gem install #{gems.to_s} --no-ri --no-rdoc") do |channel, stream, data|
         stdout << data if stream == :stdout or stream = :stderr
+        print "."
       end
 
       # debug

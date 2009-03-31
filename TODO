@@ -1,3 +1,10 @@
+* implement quiet mode 
+  (substitute each line of stdout/stderr for a '.'
+    -- maybe bring attn to an stderr line)
+
+* need to replace rubygems tarball with apt repo
+  cause apt fucks up paths for rubygems
+
 * add tests for everything
 
 * maybe stream output or do some sort of progress bar

@@ -25,20 +25,22 @@ services:
     name: merb
     stop: "killall merb"
     start: "export CLASSPATH=/$HOME/junit-4.5.jar:/$HOME/myjava:.:/$HOME/myjava/com/myjava/grammars/:/$HOME/myjava/com/myjava/antlr-3.1.1.jar:/$HOME/myjava/com/myjava/mysql-connector-java-3.1.14.jar:; cd /mnt/app/current; merb -a mongrel -p 4000 -c 4 -d -e production"
-sysdeps: 
-  tarballs: 
-    libmemcached: "http://download.tangent.org/libmemcached-0.25.tar.gz"
+sysdeps:
+  tarballs:
+    #libmemcached: "http://download.tangent.org/libmemcached-0.25.tar.gz"
   apts:
     git-core: git-core
-    rubygems1.8: rubygems1.8
-    libxml-dev: libxml-dev
+    libxml2-dev: libxml2-dev
     mysql-server: mysql-server
     libmysqlclient-dev: libmysqlclient-dev
-    #sun-java6-jdk: sun-java6-jdk               #prob needs expect script
-    #sun-java6-jre: sun-java6-jre
-    ruby-1.8-dev: ruby-1.8-dev
+    #sun-java6-jdk: sun-java6-jdk               # prob. needs to have an expect
+    #sun-java6-jre: sun-java6-jre               # script
+    ruby1.8-dev: ruby1.8-dev
     libsqlite3-dev: libsqlite3-dev
     sqlite3: sqlite3
     libsqlite3-ruby: libsqlite3-ruby
+    vim: vim
+    rdoc: rdoc
+    irb: irb
   gems:
     merb: merb
