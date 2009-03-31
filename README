@@ -28,6 +28,18 @@ as many shells as you want without having to retype your password.
 
   Now you may run pac.
 
+Examples:
+
+  Installing:
+  #initalize a new amazon ec2 instance (ami-b31ff8da)
+  ./pac.rb install ec2.ip.goes.here
+
+  Upgrading:
+  ./pac.rb upgrade mymerbproj
+
+  Restart:
+  ./pac.rb restart web
+
 Options:
   generate
     -- can be ran multiple times to modify the yaml file from a guided

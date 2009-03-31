@@ -34,8 +34,8 @@ sysdeps:
     libxml-dev: libxml-dev
     mysql-server: mysql-server
     libmysqlclient-dev: libmysqlclient-dev
-    sun-java6-jdk: sun-java6-jdk
-    sun-java6-jre: sun-java6-jre
+    #sun-java6-jdk: sun-java6-jdk               #prob needs expect script
+    #sun-java6-jre: sun-java6-jre
     ruby-1.8-dev: ruby-1.8-dev
     libsqlite3-dev: libsqlite3-dev
     sqlite3: sqlite3
