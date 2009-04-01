@@ -10,13 +10,13 @@ class EC2Wrap
     ec2 = EC2::Base.new(:access_key_id => hash["access_key"], :secret_access_key => hash["secret_key"])
 
     # create ubuntu jaunty jakolope instance
-    ni = ec2.run_instances(:image_id => "ami-b31ff8da", :key_name => hash["key_name"])
+    ni = ec2.run_instances(:image_id => "ami-b31ff8da", :availability_zone => "us-east-1a", :key_name => hash["key_name"])
     rid =  ni["reservationId"]
     instance = ec2.describe_instances(:reservationID => rid)
     count = instance.reservationSet.item.count
 
     # create volume
-    vol = ec2.create_volume( :availability_zone => "us-east-1c", :size => "5" )
+    vol = ec2.create_volume( :availability_zone => "us-east-1a", :size => "5" )
 
     instance = ec2.describe_instances(:reservationID => rid)
     instanceid = instance.reservationSet.item[count-1].instancesSet.item[0].instanceId

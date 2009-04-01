@@ -76,6 +76,14 @@ class Pac
       # debug
       puts stdout
 
+      puts colorGreen "performing post-install xfs mounting..."
+      stdout = ""
+      ssh.exec!("mkfs.xfs -l version=1 /dev/sdh; echo \"/dev/sdh /vol xfs noatime 0 0\" >> /etc/fstab;" +
+                " mkdir /vol; mount /vol;") do |channel, stream, data|
+        stdout << data if stream == :stdout or stream = :stderr
+        print "."
+      end
+
     end
 
     puts colorGreen("done")
