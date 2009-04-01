@@ -13,16 +13,29 @@ class EC2Wrap
     ni = ec2.run_instances(:image_id => "ami-b31ff8da")
     rid =  ni["reservationId"]
     instance = ec2.describe_instances(:reservationID => rid)
+    count = instance.reservationSet.item.count
 
     # create volume
     vol = ec2.create_volume( :availability_zone => "us-east-1c", :size => "5" )
 
-    dnsname = instance.reservationSet.item[0].instancesSet.item[0].dnsName
-    instanceid = instance.reservationSet.item[0].instancesSet.item[0].instanceId
+    instance = ec2.describe_instances(:reservationID => rid)
+    instanceid = instance.reservationSet.item[count-1].instancesSet.item[0].instanceId
 
     #attach
-    ec2.attach_volume( :volume_id => vol.volumeId, :instance_id => instanceid, :device => '/dev/sdh')
+    flag = true
+    while(flag) do 
+      begin
+        puts colorBlack ".."
+        ec2.attach_volume( :volume_id => vol.volumeId, :instance_id => instanceid, :device => '/dev/sdh')
+        flag = false
+      rescue
+        sleep 1
+      end
+    end
 
+    # need to re-associate our instance to figure out what the dns is
+    instance = ec2.describe_instances(:reservationID => rid)
+    dnsname = instance.reservationSet.item[count-1].instancesSet.item[0].dnsName
     puts colorBlue dnsname
   end
 
