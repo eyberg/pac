@@ -127,8 +127,21 @@ rsync -aR /etc/mysql /vol/;
         print "."
       end
 
+      puts colorGreen "installing best version of haml"
+      stdout = ""
+      ssh.exec!("git clone git://github.com/nex3/haml.git; cd haml;" +
+                "rake gem; gem install pkg/haml-2.1.0.gem;") do |channel, stream, data|
+        stdout << data if stream == :stdout or stream = :stderr
+        print "."
+      end
 
     end
+
+    puts colorBlue "Don't forget to add your mysql user before starting up for the first time!"
+    puts colorBlue "Don't forget to perform 'rake MERB_ENV=production db:automigrate'"
+
+    puts colorRed "still need to load up nginx conf file... maybe a conf dir .."
+    puts colorBlue "you have ssl you'll need to upload those as well.."
 
     puts colorGreen("done")
   end
@@ -160,6 +173,9 @@ rsync -aR /etc/mysql /vol/;
         stdout = ""
         ssh.exec!("cd #{dlocation}; ls -1 #{ARGV[1]}") do |channel, stream, data|
           stdout << data if stream == :stdout
+          if stream == :stderr then
+            puts colorRed data
+          end
         end
 
         # get latest code
@@ -170,6 +186,9 @@ rsync -aR /etc/mysql /vol/;
           stdout = ""
           ssh.exec!("cd #{dlocation}/#{ARGV[1]}; git reset --hard; git pull") do |channel, stream, data|
             stdout << data if stream == :stdout
+            if stream == :stderr then
+              puts colorRed data
+            end
           end
 
           puts stdout
@@ -196,6 +215,9 @@ rsync -aR /etc/mysql /vol/;
           stdout = ""
           ssh.exec!(hash["projects"]["#{ARGV[1]}"]["build"]) do |channel, stream, data|
             stdout << data if stream == :stdout
+            if stream == :stderr then
+              puts colorRed data
+            end
           end
 
           puts stdout
