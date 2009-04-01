@@ -68,13 +68,36 @@ class Pac
       # should we prompt user to install merb or rails or should it go into
       # pac.yml?
       stdout = ""
-      ssh.exec!("gem install #{gems.to_s} --no-ri --no-rdoc") do |channel, stream, data|
+      ssh.exec!("sudo gem sources -a http://gems.github.com; gem install #{gems.to_s} --no-ri --no-rdoc") do |channel, stream, data|
         stdout << data if stream == :stdout or stream = :stderr
         print "."
       end
 
       # debug
       puts stdout
+
+      #memcached bullshit
+      puts colorGreen "installing memcached related files..."
+      stdout = ""
+      ssh.exec!("wget http://blog.evanweaver.com/files/libmemcached-0.25.14.tar.gz;" +
+                "wget http://blog.evanweaver.com/files/memcached-0.13.gem;" +
+                "tar xzf libmemcached-0.25*.tar.gz;" +
+                "cd libmemcached*; ./configure && make && make install;" +
+                "cd ..; ldconfig; gem install memcached-0.13.gem") do |channel, stream, data|
+        stdout << data if stream == :stdout or stream = :stderr
+        print "."
+      end
+
+      #beanstalkd
+      puts colorGreen "installing beanstalkd files..."
+      stdout = ""
+      ssh.exec!("wget http://xph.us/dist/beanstalkd/beanstalkd-1.3.tar.gz" +
+                "tar xzf beanstalkd*.tar.gz;" +
+                "cd beanstalkd*; ./configure && make && make install;" +
+                "cd ..; gem install beanstalk-client;") do |channel, stream, data|
+        stdout << data if stream == :stdout or stream = :stderr
+        print "."
+      end
 
       puts colorGreen "performing post-install xfs mounting..."
       stdout = ""
@@ -84,9 +107,36 @@ class Pac
         print "."
       end
 
+      puts colorGreen "moving mysql to the xfs partition"
+      stdout = ""
+      ssh.exec!("/etc/init.d/mysql stop; killall mysqld_safe; mkdir /vol/lib /vol/log;" +
+                "mv /var/lib/mysql /vol/lib; mv /var/log/mysql /vol/log;" +
+                "test -f /vol/log/mysql/mysql-bin.index && " +
+                "perl -pi -e 's%/var/log/%/vol/log/%' /vol/log/mysql/mysql-bin.index" +
+                "cat > /etc/mysql/conf.d/mysql-ec2.cnf <<EOM
+[mysqld]
+innodb_file_per_table
+datadir          = /vol/lib/mysql
+log_bin          = /vol/log/mysql/mysql-bin.log
+max_binlog_size  = 1000M
+EOM
+rsync -aR /etc/mysql /vol/;
+" +
+"/etc/init.d/mysql start; mdir -p /mnt/app/current;") do |channel, stream, data|
+        stdout << data if stream == :stdout or stream = :stderr
+        print "."
+      end
+
+
     end
 
     puts colorGreen("done")
+  end
+
+  def grabjars
+     # if you can't find the jar in a list or we start up an
+     # app and are missing a jar 
+     # we goto jarfinder
   end
 
   def provision
@@ -131,6 +181,9 @@ class Pac
           stdout = ""
           ssh.exec!("cd #{dlocation}; git clone " + hash["projects"][ARGV[1]]["repo"]) do |channel, stream, data|
             stdout << data if stream == :stdout
+            if stream == :stderr then
+              puts colorRed data
+            end
           end
           puts stdout
         end

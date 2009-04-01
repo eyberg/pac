@@ -25,23 +25,48 @@ services:
     name: merb
     stop: "killall merb"
     start: "export CLASSPATH=/$HOME/junit-4.5.jar:/$HOME/myjava:.:/$HOME/myjava/com/myjava/grammars/:/$HOME/myjava/com/myjava/antlr-3.1.1.jar:/$HOME/myjava/com/myjava/mysql-connector-java-3.1.14.jar:; cd /mnt/app/current; merb -a mongrel -p 4000 -c 4 -d -e production"
-sysdeps:
-  tarballs:
-    #libmemcached: "http://download.tangent.org/libmemcached-0.25.tar.gz"
+sysdeps: 
+  tarballs: 
   apts:
     git-core: git-core
     libxml2-dev: libxml2-dev
     mysql-server: mysql-server
     libmysqlclient-dev: libmysqlclient-dev
+    memcached: memcached                # we don't install dev's yet cause we need a matching pair for our gem
     #sun-java6-jdk: sun-java6-jdk               # prob. needs to have an expect
     #sun-java6-jre: sun-java6-jre               # script
     ruby1.8-dev: ruby1.8-dev
     libsqlite3-dev: libsqlite3-dev
     sqlite3: sqlite3
     libsqlite3-ruby: libsqlite3-ruby
+    libxslt1-dev: libxslt1-dev
+    libevent-dev: libevent-dev
+    librmagick-ruby: librmagick-ruby
     vim: vim
     rdoc: rdoc
     irb: irb
     nginx: nginx
+    xfsprogs: xfsprogs
   gems:
     merb: merb
+    rake: rake
+    uuidtools: uuidtools
+    do_mysql: do_mysql
+    newrelic_rpm: newrelic_rpm
+    webrat: webrat
+    cucumber: cucumber
+    yard: yard
+    mocha: mocha
+    prawn: prawn
+    sparklines: sparklines
+    spacer: spacer
+    atom: atom
+    xmpp4r: xmpp4r
+    rubyforge: rubyforge
+    aws-s3: aws-s3
+    twitter: twitter
+    antage-merb-recaptcha: antage-merb-recaptcha
+    honkster-haml: honkster-haml
+    merb-hoptoad-notifier: merb-hoptoad-notifier
+  jars:
+    junit: junit
