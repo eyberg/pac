@@ -1,3 +1,4 @@
 --- 
 access_key: "access key goes here"
-secret_key: "secret key goes here" 
+secret_key: "secret key goes here"
+key_name: "sample key name goes here"

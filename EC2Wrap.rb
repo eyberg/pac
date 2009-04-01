@@ -10,7 +10,7 @@ class EC2Wrap
     ec2 = EC2::Base.new(:access_key_id => hash["access_key"], :secret_access_key => hash["secret_key"])
 
     # create ubuntu jaunty jakolope instance
-    ni = ec2.run_instances(:image_id => "ami-b31ff8da")
+    ni = ec2.run_instances(:image_id => "ami-b31ff8da", :key_name => hash["key_name"])
     rid =  ni["reservationId"]
     instance = ec2.describe_instances(:reservationID => rid)
     count = instance.reservationSet.item.count
