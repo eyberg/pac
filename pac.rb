@@ -131,7 +131,15 @@ rsync -aR /etc/mysql /vol/;
       stdout = ""
       ssh.exec!("git clone git://github.com/nex3/haml.git; cd haml;" +
                 "rake gem; gem install pkg/haml-2.1.0.gem;") do |channel, stream, data|
-        stdout << data if stream == :stdout or stream = :stderr
+        stdout << data if stream == :stdout or stream == :stderr
+        print "."
+      end
+
+      puts colorGreen "installing java"
+      stdout = ""
+      ssh.exec!("echo sun-java6-jre shared/accepted-sun-dlj-v1-1 select true |" +
+                " /usr/bin/debconf-set-selections apt-get install --yes sun-java6-jre") do |channel, stream, data|
+        stdout << data if stream == :stdout or stream == :stderr
         print "."
       end
 
