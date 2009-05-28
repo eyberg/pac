@@ -53,7 +53,11 @@ class Pac
 
       puts colorGreen("pulling and building correct rubygems")
       stdout = ""
-      ssh.exec!("wget http://rubyforge.org/frs/download.php/45905/rubygems-1.3.1.tgz;" +
+      # nohup /usr/local/bin/memcached -m 64 -p 112111 -u nobody -l 127.0.0.1
+      # 2>&1 > /dev/null &
+      ssh.exec!("wget http://memcached.googlecode.com/files/memcached-1.2.8.tar.gz;" +
+                " tar xzf memcached-1.2.8.tar.gz; cd memcached-*; ./configure && make && make install; cd .. ;" +
+                "wget http://rubyforge.org/frs/download.php/45905/rubygems-1.3.1.tgz;" +
                 " tar xzf rubygems-1.3.1.tgz; cd rubygems-1.3.1; ruby setup.rb; " +
                 "ln -s /usr/bin/gem1.8 /usr/bin/gem") do |channel, stream, data|
         stdout << data if stream == :stdout or stream = :stderr
@@ -311,12 +315,24 @@ rsync -aR /etc/mysql /vol/;
     Net::SSH.start(hash["hosts"].first[1], 'root') do |ssh|
 
       stdout = ""
-      ssh.exec!("#{stopcmd}; #{startcmd}") do |channel, stream, data|
+      ssh.exec!("#{stopcmd}") do |channel, stream, data|
         stdout << data if stream == :stdout
+        if stream == :stderr then
+          puts colorRed data
+        end
       end
+
+      stdout = ""
+      ssh.exec!("#{startcmd}") do |channel, stream, data|
+        stdout << data if stream == :stdout
+        if stream == :stderr then
+          puts colorRed data
+        end
+      end
+
     end
     
-    puts colorGreen("restarting web service")
+    puts colorGreen("restarting the #{ARGV[1]} service")
  
   end
 
