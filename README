@@ -39,7 +39,10 @@ Assumptions:
     various keys to whatever project/server and allow it to be smart enough
     to where you only have to type in your password once instead of 20 times
 
-  * if you get an error such as install libopenssl-ruby (you should already have
+  * if you get an error such as 
+    "ion.rb:199:in `method_missing': undefined method `exec!' for #<Net::SSH::Session:0xb792a53"
+
+    install libopenssl-ruby (you should already have
     this but since this is an auto-provisioning utility you might not)
     you'll also need the gem (net-ssh) version: 2.0.1 of this writing..
 

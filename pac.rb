@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
 
 require 'rubygems'
+gem 'net-ssh', '>=2.0.11'
+
 require 'net/ssh'
 require 'yaml'
 
@@ -323,7 +325,7 @@ rsync -aR /etc/mysql /vol/;
       end
 
       stdout = ""
-      ssh.exec!("#{startcmd}") do |channel, stream, data|
+      ssh.exec("#{startcmd}") do |channel, stream, data|
         stdout << data if stream == :stdout
         if stream == :stderr then
           puts colorRed data
