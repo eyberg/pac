@@ -314,7 +314,7 @@ rsync -aR /etc/mysql /vol/;
     end
 
     # by default choose the first host and webserver
-    Net::SSH.start(hash["hosts"].first[1], 'root') do |ssh|
+    Net::SSH.start(hash["hosts"].first[1], 'root', :forward_agent => true) do |ssh|
 
       stdout = ""
       ssh.exec!("#{stopcmd}") do |channel, stream, data|
@@ -324,6 +324,9 @@ rsync -aR /etc/mysql /vol/;
         end
       end
 
+      puts stdout
+      puts colorGreen("stopping #{service["name"]}")
+
       stdout = ""
       ssh.exec("#{startcmd}") do |channel, stream, data|
         stdout << data if stream == :stdout
@@ -332,9 +335,10 @@ rsync -aR /etc/mysql /vol/;
         end
       end
 
+      puts stdout
     end
-    
-    puts colorGreen("restarting the #{ARGV[1]} service")
+   
+    puts colorGreen("restarting the #{service["name"]} service")
  
   end
 
