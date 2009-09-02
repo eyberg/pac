@@ -10,3 +10,10 @@
 * maybe stream output or do some sort of progress bar
 
 * add ability to version gems -- by default take what is given..
+
+* should ask up front whether or not you want to install passenger/mongrel
+stack...
+
+* add in user-management scenarios... (eg: deploy as www-data or root or..)
+
+* should ask up front whether you want to install on ec2 or a dedicated host
