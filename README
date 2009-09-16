@@ -46,6 +46,8 @@ Assumptions:
     this but since this is an auto-provisioning utility you might not)
     you'll also need the gem (net-ssh) version: 2.0.1 of this writing..
 
+  * you need amazon-ec2 gem  sudo gem install amazon-ec2
+
 Cucumber Stories/TODO/etc..:
 
   * easy easy easy auto-provisioining of deployments

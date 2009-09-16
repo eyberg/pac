@@ -1,4 +1,4 @@
-require 'EC2'
+require 'AWS'
 require 'Colorify'
 
 class EC2Wrap
@@ -7,7 +7,7 @@ class EC2Wrap
   def provision
     hash = File.open('ec2.yml') do |f| YAML.load f end
 
-    ec2 = EC2::Base.new(:access_key_id => hash["access_key"], :secret_access_key => hash["secret_key"])
+    ec2 = AWS::EC2::Base.new(:access_key_id => hash["access_key"], :secret_access_key => hash["secret_key"])
 
     # create ubuntu jaunty jakolope instance
     ni = ec2.run_instances(:image_id => "ami-b31ff8da", :availability_zone => "us-east-1a", :key_name => hash["key_name"])
